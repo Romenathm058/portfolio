@@ -29,10 +29,21 @@ function revealOnScroll() {
 window.addEventListener('scroll', revealOnScroll);
 window.addEventListener('load', revealOnScroll);
 
-// Form Submission
+// Form Submission with EmailJS
 const contactForm = document.getElementById('contactForm');
+const popupMessage = document.getElementById('popup-message');
+
 contactForm.addEventListener('submit', function(e) {
   e.preventDefault();
-  alert('Thanks for your message! I’ll get back to you soon.');
-  contactForm.reset();
+
+  emailjs.sendForm("service_kr86gfq", "template_onfoelq", this)
+    .then(function () {
+      popupMessage.style.display = "block";
+      setTimeout(() => {
+        popupMessage.style.display = "none";
+      }, 4000);
+      contactForm.reset();
+    }, function (error) {
+      alert("Failed to send message: " + JSON.stringify(error));
+    });
 });
